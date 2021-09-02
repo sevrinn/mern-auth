@@ -1,5 +1,5 @@
 const UserController = require("../controllers/user.controller");
 
-module.exprots = (app) => {
+module.exports = (app) => {
   app.post("/api/register", UserController.register);
 };
