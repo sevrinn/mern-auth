@@ -1,31 +1,33 @@
+//start loading with the .env file date
+//this way we can use it everywhere in our server
+require("dotenv").config();
 //import express and other libraries
 const express = require("express");
 const app = express();
-
-require("dotenv").config();
-console.log(process.env.SECRET_KEY);
-console.log(process.env.PORT);
-
-//declare port
-// const port = 8000;
-//port is now declared in .env
+const jwt = require("jsonwebtoken");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 //configre express server
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(
+  cors({
+    //adding the ability to use credentials with cookies
+    credentials: true,
+    origin: process.env.CLIENT_URL,
+  })
+);
+
+//configure server to accept and update cookies
+app.use(cookieParser());
 
 //configure mongoose to connect
 require("./config/mongoose.config");
 
 //add routes to listen
-require("./routes/user.routes")(app);
-//start the server listening
+const userRoutes = require("./routes/user.routes")(app);
+
 app.listen(process.env.PORT, () => {
-  console.log("Listening on port" + process.env.PORT);
+  console.log("Listening on port " + process.env.PORT);
 });
-
-const cookieParser = require("cookie-parser");
-const cors = require("cors");
-
-app.use(cookieParser());
-app.use(cors({ credentials: true, origin: process.env.CLIENT_URL }));

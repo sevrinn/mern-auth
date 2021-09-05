@@ -1,7 +1,7 @@
 //require mongoose
 const mongoose = require("mongoose");
 //create dbName const
-const dbName = "userDB";
+const dbName = process.env.DB_NAME;
 //connect to mongoDB server
 mongoose
   .connect("mongodb://localhost/" + dbName, {
